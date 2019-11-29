@@ -21,5 +21,6 @@ public class Launch extends Application {
         stage.setScene(scene);
         stage.show();
         System.out.println("Test change");
+        System.out.println("hello!!!");
     }
 }
