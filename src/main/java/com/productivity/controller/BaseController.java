@@ -1,6 +1,6 @@
 package com.productivity.controller;
 
-import com.productivity.RecordManager;
+import com.productivity.model.RecordManager;
 import com.productivity.view.ViewFactory;
 
 public abstract class BaseController {

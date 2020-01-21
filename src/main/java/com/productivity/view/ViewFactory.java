@@ -1,9 +1,8 @@
 package com.productivity.view;
 
-import com.productivity.RecordManager;
+import com.productivity.model.RecordManager;
 import com.productivity.controller.BaseController;
 import com.productivity.controller.MainWindow;
-import com.productivity.model.RecordType;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

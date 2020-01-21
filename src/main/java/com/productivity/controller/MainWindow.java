@@ -1,6 +1,6 @@
 package com.productivity.controller;
 
-import com.productivity.RecordManager;
+import com.productivity.model.RecordManager;
 import com.productivity.controller.service.RecordAddingResult;
 import com.productivity.controller.service.RecordService;
 import com.productivity.model.Record;
@@ -11,10 +11,14 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.paint.Color;
 
 import java.net.URL;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.regex.Pattern;
 
@@ -32,7 +36,19 @@ public class MainWindow extends BaseController implements Initializable {
     private TextField recordTimeField;
 
     @FXML
-    private TableView<?> recordTable;
+    private TableView<Record> recordTable;
+
+    @FXML
+    private TableColumn<Record, LocalDate> dateCol;
+
+    @FXML
+    private TableColumn<Record, RecordType> typeCol;
+
+    @FXML
+    private TableColumn<Record, Integer> timeCol;
+
+    @FXML
+    private TableColumn<Record, String> noteCol;
 
     @FXML
     private LineChart<?, ?> recordMainChart;
@@ -49,6 +65,15 @@ public class MainWindow extends BaseController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setUpRecordTimeSelect();
+        setUpTableView();
+    }
+
+    private void setUpTableView() {
+        dateCol.setCellValueFactory(new PropertyValueFactory<>("date"));
+        typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+        timeCol.setCellValueFactory(new PropertyValueFactory<>("minutes"));
+        noteCol.setCellValueFactory(new PropertyValueFactory<>("note"));
+        recordTable.setItems(recordManager.getRecords());
     }
 
     private void setUpRecordTimeSelect() {
@@ -61,9 +86,9 @@ public class MainWindow extends BaseController implements Initializable {
     void addAction() {
         if ( !fieldsAreValid()) return;
         int minutes = Integer.parseInt(recordTimeField.getText());
-        Record record = new Record(recordTypeSelect.getValue(), LocalDateTime.now(),
+        Record record = new Record(recordTypeSelect.getValue(), LocalDate.now(),
                 recordNoteArea.getText(), minutes);
-        RecordService service = new RecordService(record);
+        RecordService service = new RecordService(record, recordManager);
         service.start();
         service.setOnSucceeded(event -> {
             RecordAddingResult result = service.getValue();
