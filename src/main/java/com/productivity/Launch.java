@@ -26,5 +26,6 @@ public class Launch extends Application {
     @Override
     public void stop() throws Exception {
         recordManager.saveData();
+        System.out.println("push test");
     }
 }
